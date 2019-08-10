@@ -1,19 +1,16 @@
         [TestMethod]
-        public async Task {repo_name}Repository_Filterby{field_name}_OrderASC()
+        public async Task {repo_name}_Skip0AndTake10_ASC_ReturnValid()
         {
-            {repo_name}Filter filter = new {repo_name}Filter
+            {repo_name}Filter filter = new {repo_name}Filter()
             {
-                {field_name} = new StringFilter { StartsWith = /** pattern here */ },
                 OrderBy = {repo_name}Order.{field_name},
-                OrderType = OrderType.DESC,
-                Skip = 1,
-                Take = 2
+                Selects = {repo_name}Select.{field_name},
+                Skip = 0,
+                Take = 10,
             };
-            var result = await {repo_name}Repository.List(filter);
-            int i = 1;
-            for (int index = 0; index < result.Count; index++)
-            {
-                Assert.AreEqual(/** string patern */ + i.ToString(), result[index]);
-                i++;
-            }
+
+            var result = await repository.List(filter);
+            var list{field_name} = string.Join(",", result.Select(r => r.{field_name}));
+            var expected = await this.DbContext.{repo_name}.OrderBy(b => b.{field_name}).Select(b => b.{field_name}).Skip(0).Take(10).ToListAsync();
+            Assert.AreEqual(list{field_name}, string.Join(",", expected));
         }
