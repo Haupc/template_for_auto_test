@@ -1,5 +1,5 @@
         [TestMethod]
-        public async Task {repo_name}Repository_List_ReturnTrue_OrderStringDESC()
+        public async Task {repo_name}Repository_Filterby{field_name}_OrderDESC()
         {
             {repo_name}Filter filter = new {repo_name}Filter
             {

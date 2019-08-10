@@ -1,5 +1,5 @@
        [TestMethod]
-        public async Task {repo_name}_IntFilter_ReturnValid()
+        public async Task {repo_name}_IntFilterby{field_name}_ReturnValid()
         {
             {repo_name}Filter filter = new {repo_name}Filter
             {
