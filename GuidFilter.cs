@@ -1,13 +1,19 @@
         [TestMethod]
-        public async Task {repo_name}_Filter{field_name}_ReturnValid()
+        public async Task {repo_name}_ListFilterBy{Guid_filter_field}_ReturnTrue()
         {
-            {repo_name}Filter filter = new {repo_name}Filter
+            {repo_name}Filter filter = new {repo_name}Filter()
             {
-                SetOfBookId = new Guid("02759cdc-d873-4c21-9f84-481b5447f056"),
-                BankId = new GuidFilter { Equal = new Guid("a064cbcd-8c22-40dd-b872-7cad19baa12b") }
+                // require_field = CreateGuid(code) (1)
+                {Guid_filter_field} = new GuidFilter() { Equal = CreateGuid(/** string patern */) }, //(2)
+                Skip = 0,
+                Take = 10
             };
-
-            var result = await repository.Count(filter);
-            var expected = await DbContext.{repo_name}.Where(b => b.SetOfBookId.Equals(new Guid("02759cdc-d873-4c21-9f84-481b5447f056")) && b.BankId.Equals(new Guid("a064cbcd-8c22-40dd-b872-7cad19baa12b"))).Select(b => b.Id).CountAsync();
-            Assert.AreEqual(expected, result);
+            var result = await repository.List(filter);
+            var listCodes = string.Join(",", result.Select(r => r.Code));
+            var expected = await this.DbContext.{repo_name}.Where(c => c.{Guid_filter_field}.Equals(/** //(2) */) && c.{require_field}.Equals(/** Guid of require_field (1) */))
+                                                           .OrderBy(c => c.Code)
+                                                           .Select(c => c.Code)
+                                                           .Skip(0).Take(10)
+                                                           .ToListAsync();
+            Assert.AreEqual(listCodes, string.Join(",", expected));
         }
