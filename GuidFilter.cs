@@ -8,7 +8,7 @@
 
             var result = await repository.List(filter);
             var listCodes = string.Join(",", result.Select(r => r.Code));
-            var expected = await this.DbContext.{repo_name}.Where(c => c.{filter_field}.Equals(/** code patern */))
+            var expected = await this.DbContext.{repo_name}.Where(c => c.{filter_field}.Equals(CreateGuid(/** code patern */) ))
                                                            .OrderBy(c => c.Code)
                                                            .Select(c => c.Code)
                                                            .Skip(0).Take(10)
